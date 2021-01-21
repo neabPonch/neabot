@@ -20,7 +20,15 @@ async def on_ready():
     await bot_channel.send('I am here.')
 
 
-extensions = ['cogs.Listener', 'cogs.Quotes', 'cogs.Crypto', 'cogs.MiscCommands', 'cogs.GPT2', 'cogs.Halp', 'cogs.Audio', 'cogs.Tasks']
+extensions = ['cogs.Listener',
+              'cogs.Quotes',
+              'cogs.Crypto',
+              'cogs.MiscCommands',
+              'cogs.GPT2',
+              'cogs.Halp',
+              'cogs.Audio',
+              'cogs.Tasks',
+              'cogs.Jokes']
 
 if __name__ == '__main__':
     for ext in extensions:

@@ -1,6 +1,5 @@
 from discord.ext import commands
 from discord.ext.commands import MissingRole
-
 import DBstuff
 import random
 
@@ -18,7 +17,7 @@ class Quotes(commands.Cog): # extends the commands.Cog class in python
         query = '''SELECT quote FROM quotes
         ORDER BY RAND()
         LIMIT 1'''
-        randomQuote = DBstuff.DBstuff.dbquery(query=query)
+        randomQuote = DBstuff.DBstuff.dbquotequery(query=query)
         await message.send(self.cleanquote(randomQuote))
 
     @commands.command(name='quoteadd')
@@ -28,7 +27,7 @@ class Quotes(commands.Cog): # extends the commands.Cog class in python
         user = message.author.name
         string = message.message.content[10:]
         newquotevalues = (string, user)
-        newquotenumber = DBstuff.DBstuff.dbquery(query=query, newquote=newquotevalues)
+        newquotenumber = DBstuff.DBstuff.dbquotequery(query=query, newquote=newquotevalues)
         await message.send('quote {} added'.format(newquotenumber))
 
     @commands.command(name='quotedelete')
@@ -37,7 +36,7 @@ class Quotes(commands.Cog): # extends the commands.Cog class in python
         string = message.message.content
         query = 'DELETE FROM quotes WHERE id = (%s)'
         quotenumber = [int(s) for s in string.split() if s.isdigit()][0]
-        DBstuff.DBstuff.dbquery(query=query, quotenumber=quotenumber)
+        DBstuff.DBstuff.dbquotequery(query=query, quotenumber=quotenumber)
         await message.send('quote {} deleted'.format(quotenumber))
 
     @deletequote.error
@@ -52,7 +51,7 @@ class Quotes(commands.Cog): # extends the commands.Cog class in python
         try:
             quotenumber = [int(s) for s in string.split() if s.isdigit()][0]
             try:
-                fullquote = DBstuff.DBstuff.dbquery(query=query, quotenumber=quotenumber)
+                fullquote = DBstuff.DBstuff.dbquotequery(query=query, quotenumber=quotenumber)
                 await message.send(self.cleanquote(fullquote))
             except:
                 await message.send("That quote doesn't exist, you fuck.")
@@ -65,7 +64,7 @@ class Quotes(commands.Cog): # extends the commands.Cog class in python
         query = "SELECT quote FROM quotes WHERE quote LIKE (%s)"
         findstring = '%' + message.message.content[11:] + '%'
         try:
-            findquote = DBstuff.DBstuff.dbquery(query=query, quotenumber=findstring)
+            findquote = DBstuff.DBstuff.dbquotequery(query=query, quotenumber=findstring)
             finalfindquote = random.choice(findquote)
             await message.send(finalfindquote[0])
         except:
