@@ -8,14 +8,14 @@ import datetime
 
 load_dotenv()
 CMC_KEY = os.getenv('CMC_KEY')
+BOT_CRYPTO_CHANNEL = int(os.getenv('BOT_CRYPTO_CHANNEL'))
+
 
 class Crypto(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(name='BTC')
-    @commands.has_role('neab')
-    async def BTC(self, message):
+    def getprice(self):
         url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest'
         parameters = {
             'start': '1',
@@ -36,9 +36,21 @@ class Crypto(commands.Cog):
             price = data['data'][0]['quote']['USD']['price']
             time = data['data'][0]['last_updated']
             newtime = datetime.datetime.strptime(time, '%Y-%m-%dT%H:%M:%S.%fZ')
-            await message.send('The CoinMarketCap price of Bitcoin is ${0:,.2f} USD as of {1}'.format(price, newtime))
+            return (price, newtime)
         except (ConnectionError, Timeout, TooManyRedirects) as e:
             print(e)
+            return ('error', 'error')
+
+    @commands.command(name='BTC')
+    @commands.has_role('neab')
+    async def BTC(self, message):
+        #print('made it to BTC2')
+        message_channel = self.bot.get_channel(BOT_CRYPTO_CHANNEL)
+        #print('made it to crypto.message_channel')
+        price, newtime = Crypto.getprice(self)
+        #print('made it to Crypto price and newtime')
+        await message.send('The CoinMarketCap price of Bitcoin is ${0:,.2f} USD as of {1}'.format(price, newtime))
+
 
 def setup(bot):
     bot.add_cog(Crypto(bot)) # instantiates Crypto cog

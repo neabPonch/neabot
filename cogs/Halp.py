@@ -12,9 +12,11 @@ class Halp(commands.Cog):
                    !quote quotenumber -> call specific quote by number
                    !quotedelete quotenumber -> deletes quote by number (must be admin)
                    !BTC -> returns latest Bitcoin price
-                   !gay -> gives accurate % of your gayness
+                   !percent sometext -> gives accurate % of anything you want
                    !catjam -> cat jamming the fuck out
                    !athonking -> hmm
+                   !8ball somequestion-> for some insight
+                   !pp -> gives wang length
                    !gpt2 sometext -> uses shitty AI to complete the story
                    !play airhorn -> plays a random airhorn clip in voice
                    !play tf2 -> plays a random tf2 clip in voice
