@@ -1,5 +1,6 @@
 from discord.ext import commands
 import random
+import discord
 
 
 class MiscCommands(commands.Cog):
@@ -61,6 +62,26 @@ class MiscCommands(commands.Cog):
         answer = random.choice(eightballchoices)
         await message.send('{}, {}'.format(user, answer))
 
+    @commands.command(name='mock')
+    @commands.has_role('neab')
+    async def mock(self, message):
+        lastmessageobj = await message.channel.history(limit=2).flatten()
+        lastmessageid = lastmessageobj[1].content.lower()
+        count = len(lastmessageid)
+        mocktxt1 = ''
+
+        for letter in lastmessageid:
+            if count % 2 == 0:
+                mocktxt1 = mocktxt1 + letter
+                count -= 1
+            else:
+                mocktxt1 = mocktxt1 + letter.upper()
+                count -= 1
+
+        embed = discord.Embed()
+        embed.set_image(url='https://imgur.com/I1xDtWl.jpg')
+        embed.set_footer(text=mocktxt1)
+        await message.send(embed=embed)
 
 def setup(bot):  # required for all Cogs
     bot.add_cog(MiscCommands(bot))  # instantiates MiscCommands Cog
